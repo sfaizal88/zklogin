@@ -90,7 +90,7 @@ function LoginPage() {
           const response = await axios.post('https://oauth2.googleapis.com/token', {
             client_id: '601576007211-ud21dpqtr8vfghakqrgio1g9498s39kk.apps.googleusercontent.com',
             client_secret: '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',
-            grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
+            grant_type: 'client_credentials',
             subject_token_type: 'urn:ietf:params:oauth:token-type:access_token',
             subject_token: accessToken,
           });
