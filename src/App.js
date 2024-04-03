@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+/**
+ * 
+ * App component
+ * @author - NA 
+ * @date - 26th March, 2024
+ * 
+ */
+// GENERIC IMPORT
+// import {Box} from '@mui/material';
+import { ThemeProvider } from '@mui/material/styles';
+import LoginPage from './view/pages/login';
+import Header from './view/pages/common/header';
+import theme from './theme'; 
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Header/>
+      <LoginPage/>
+    </ThemeProvider>
   );
 }
 
