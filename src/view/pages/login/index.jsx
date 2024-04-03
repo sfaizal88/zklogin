@@ -53,8 +53,9 @@ function LoginPage() {
     useEffect(
         () => {
             if (user) {
+                exchangeAccessTokenForJwt(user.access_token);
                 // setLoading(true);
-                axios
+                /* axios
                     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
                         headers: {
                             Authorization: `Bearer ${user.access_token}`,
@@ -69,11 +70,25 @@ function LoginPage() {
                     .catch((err) => {
                         console.log(err);
                         setLoading(false);
-                    });
-            }
+                    });*/
+            } 
         },
         [ user ]
     );
+
+    const exchangeAccessTokenForJwt = async (accessToken) => {
+        try {
+          const response = await fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + accessToken);
+          const data = await response.json();
+          if (data.error) {
+            throw new Error(data.error_description || 'Failed to exchange access token for JWT');
+          } else {
+            console.log(data.id_token);
+          }
+        } catch (error) {
+          console.error('Error exchanging access token for JWT:', error);
+        }
+    };
 
     const exchangeAccessTokenForJWT = async (accessToken) => {
         try {
