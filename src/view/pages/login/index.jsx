@@ -8,6 +8,7 @@
 // GENERIC IMPORT
 import React, {useState, useEffect} from 'react';
 import {Box} from '@mui/material';
+import qs from 'qs';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 
 // OTHER COMPONENT, HOOK, CONTEXT
