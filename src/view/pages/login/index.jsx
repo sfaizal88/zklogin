@@ -76,7 +76,7 @@ function LoginPage() {
 
     const exchangeAccessTokenForJWT = async (accessToken) => {
         try {
-            const response = await axios.post('https://oauth2.googleapis.com/token', null, {
+            /* const response = await axios.post('https://oauth2.googleapis.com/token', null, {
             params: {
                 grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
                 subject_token_type: 'urn:ietf:params:oauth:token-type:access_token',
@@ -86,14 +86,14 @@ function LoginPage() {
                 Authorization: `Basic ${Buffer.from('601576007211-ud21dpqtr8vfghakqrgio1g9498s39kk.apps.googleusercontent.com' + ':' + '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').toString('base64')}`,
                 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            });
-          /* const response = await axios.post('https://oauth2.googleapis.com/token', {
+            });*/
+          const response = await axios.post('https://oauth2.googleapis.com/token', {
             client_id: '601576007211-ud21dpqtr8vfghakqrgio1g9498s39kk.apps.googleusercontent.com',
             client_secret: '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',
             grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
             subject_token_type: 'urn:ietf:params:oauth:token-type:access_token',
             subject_token: accessToken,
-          }); */
+          });
       
           const jwtToken = response.data.id_token;
           console.log("jwtToken: ", jwtToken);
