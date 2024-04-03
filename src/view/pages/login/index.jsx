@@ -41,19 +41,34 @@ function LoginPage() {
 
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => {
+            console.log(codeResponse)
             if (codeResponse){ 
                 localStorage.setItem("access_token", codeResponse?.access_token);
                 localStorage.setItem("useData", JSON.stringify(codeResponse));
                 setUser(codeResponse)
             }
         },
-        onError: (error) => console.log('Login Failed:', error)
+        onError: (error) => console.log('Login Failed:', error),
     });
-
+    const getJWT = async  (accessToken) => {
+        const CLIENT_ID = "601576007211-ud21dpqtr8vfghakqrgio1g9498s39kk.apps.googleusercontent.com";
+        const SECRET_ID = "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";
+        // Send a request to Google's token endpoint to exchange the access token for a JWT
+        const response = await fetch('https://www.googleapis.com/oauth2/v4/token', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `client_id=${CLIENT_ID}&client_secret=${SECRET_ID}&grant_type=authorization_code&code=${accessToken}&redirect_uri=http://localhost:3000`,
+        });
+        console.log(response);
+        const tokenData = await response.json();
+        const { id_token } = tokenData;
+    }
     useEffect(
         () => {
             if (user) {
-                exchangeAccessTokenForJwt(user.access_token);
+                getJWT(user.access_token);
                 // setLoading(true);
                 /* axios
                     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
