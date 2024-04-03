@@ -18,11 +18,11 @@ function LoginPage() {
 
     const getUserStorageData = () => {
         const useData = localStorage.getItem("useData");
-        return useData ? JSON.parse(useData) : [];
+        return useData ? JSON.parse(useData) : {}
     }
     const getProfileStorageData = () => {
         const profileData = localStorage.getItem("profileData");
-        return profileData ? JSON.parse(profileData) : [];
+        return profileData ? JSON.parse(profileData) : {}
     }
     const [ user, setUser ] = useState(getUserStorageData());
     const [ profile, setProfile ] = useState(getProfileStorageData());
@@ -61,13 +61,14 @@ function LoginPage() {
     // log out function to log the user out of google and set the profile array to null
     const logOut = () => {
         googleLogout();
-        setProfile(null);
+        setProfile([]);
+        setUser([]);
         localStorage.clear();
     };
 
     return (
         <Box>
-            {profile ? (
+            {(Array.isArray(profile) && profile.length !== 0) || (typeof profile === 'object' && Object.keys(profile).length !== 0) ? (
                 <Box>
                     <Box mb={1}><strong>User Logged in</strong></Box>
                     <Box mb={1}><strong>Name:</strong> {profile.name}</Box>
