@@ -18,20 +18,22 @@ function LoginPage() {
 
     const getUserStorageData = () => {
         const useData = localStorage.getItem("useData");
-        return useData ? JSON.parse(useData) : null;
+        return useData ? JSON.parse(useData) : [];
     }
     const getProfileStorageData = () => {
         const profileData = localStorage.getItem("profileData");
-        return profileData ? JSON.parse(profileData) : null;
+        return profileData ? JSON.parse(profileData) : [];
     }
     const [ user, setUser ] = useState(getUserStorageData());
     const [ profile, setProfile ] = useState(getProfileStorageData());
 
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => {
-            localStorage.setItem("access_token", codeResponse.access_token);
-            localStorage.setItem("useData", JSON.stringify(codeResponse));
-            setUser(codeResponse)
+            if (codeResponse){ 
+                localStorage.setItem("access_token", codeResponse?.access_token);
+                localStorage.setItem("useData", JSON.stringify(codeResponse));
+                setUser(codeResponse)
+            }
         },
         onError: (error) => console.log('Login Failed:', error)
     });
