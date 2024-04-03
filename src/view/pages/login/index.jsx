@@ -11,6 +11,7 @@ import {Box} from '@mui/material';
 import { googleLogout, useGoogleLogin } from '@react-oauth/google';
 
 // OTHER COMPONENT, HOOK, CONTEXT
+import { Loader } from '../../atoms';
 
 import axios from 'axios';
 
@@ -24,9 +25,10 @@ function LoginPage() {
         const profileData = localStorage.getItem("profileData");
         return profileData ? JSON.parse(profileData) : {}
     }
+    const [isLoading, setLoading] = useState(false);
     const [ user, setUser ] = useState(getUserStorageData());
     const [ profile, setProfile ] = useState(getProfileStorageData());
-    console.log("profile: ", profile);
+    
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => {
             if (codeResponse){ 
@@ -41,6 +43,7 @@ function LoginPage() {
     useEffect(
         () => {
             if (user) {
+                setLoading(true);
                 axios
                     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
                         headers: {
@@ -51,8 +54,12 @@ function LoginPage() {
                     .then((res) => {
                         setProfile(res.data);
                         localStorage.setItem("profileData", JSON.stringify(res.data));
+                        setLoading(false);
                     })
-                    .catch((err) => console.log(err));
+                    .catch((err) => {
+                        console.log(err);
+                        setLoading(false);
+                    });
             }
         },
         [ user ]
@@ -68,6 +75,7 @@ function LoginPage() {
 
     return (
         <Box>
+            {isLoading && <Loader/>}
             {(Array.isArray(profile) && profile.length !== 0) || (typeof profile === 'object' && Object.keys(profile).length !== 0) ? (
                 <Box>
                     <Box mb={1}><strong>User Logged in</strong></Box>
