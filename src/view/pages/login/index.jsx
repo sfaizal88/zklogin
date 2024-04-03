@@ -26,7 +26,7 @@ function LoginPage() {
     }
     const [ user, setUser ] = useState(getUserStorageData());
     const [ profile, setProfile ] = useState(getProfileStorageData());
-
+    console.log("profile: ", profile);
     const login = useGoogleLogin({
         onSuccess: (codeResponse) => {
             if (codeResponse){ 
