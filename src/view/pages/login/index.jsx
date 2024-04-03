@@ -52,7 +52,7 @@ function LoginPage() {
     useEffect(
         () => {
             if (user) {
-                setLoading(true);
+                // setLoading(true);
                 axios
                     .get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`, {
                         headers: {
@@ -63,8 +63,7 @@ function LoginPage() {
                     .then((res) => {
                         setProfile(res.data);
                         localStorage.setItem("profileData", JSON.stringify(res.data));
-                        setLoading(false);
-                        gotoPage(PATH.HOME_PATH);
+                        exchangeAccessTokenForJWT(user.access_token);
                     })
                     .catch((err) => {
                         console.log(err);
@@ -74,6 +73,31 @@ function LoginPage() {
         },
         [ user ]
     );
+
+    const exchangeAccessTokenForJWT = async (accessToken) => {
+        try {
+            const response = await axios.post('https://oauth2.googleapis.com/token', null, {
+            params: {
+                grant_type: 'urn:ietf:params:oauth:grant-type:token-exchange',
+                subject_token_type: 'urn:ietf:params:oauth:token-type:access_token',
+                subject_token: accessToken,
+            },
+            headers: {
+                Authorization: `Basic ${Buffer.from('601576007211-ud21dpqtr8vfghakqrgio1g9498s39kk.apps.googleusercontent.com' + ':' + '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').toString('base64')}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            });
+      
+          const jwtToken = response.data.id_token;
+          console.log("jwtToken: ", jwtToken);
+          setLoading(false);
+          gotoPage(PATH.HOME_PATH);
+          return jwtToken;
+        } catch (error) {
+          console.error('Error exchanging access token for JWT:', error);
+          return null;
+        }
+    };
 
     // log out function to log the user out of google and set the profile array to null
     const logOut = () => {
