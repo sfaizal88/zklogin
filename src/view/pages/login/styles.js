@@ -1,12 +1,15 @@
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
-    container: {
+    btnContainer: {
         display: 'flex',
         flex: 1,
-        gap: '16px',
-        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
+    fieldRow: {
+        wordBreak: 'break-word',
+    }
 }));
   
 export default useStyles;
