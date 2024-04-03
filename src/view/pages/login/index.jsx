@@ -18,11 +18,11 @@ function LoginPage() {
 
     const getUserStorageData = () => {
         const useData = localStorage.getItem("useData");
-        return JSON.parse(useData) || [];
+        return useData ? JSON.parse(useData) : null;
     }
     const getProfileStorageData = () => {
         const profileData = localStorage.getItem("profileData");
-        return JSON.parse(profileData) || [];
+        return profileData ? JSON.parse(profileData) : null;
     }
     const [ user, setUser ] = useState(getUserStorageData());
     const [ profile, setProfile ] = useState(getProfileStorageData());
