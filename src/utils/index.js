@@ -8,9 +8,9 @@ export function bigIntToChunkedBytes(
   ) {
     const res = [];
     const bigintNum = typeof num == "bigint" ? num : num.valueOf();
-    const msk = (1n << (bytesPerChunk)) - 1n;
+    const msk = (1n << BigInt(bytesPerChunk)) - 1n;
     for (let i = 0; i < numChunks; ++i) {
-      res.push(((bigintNum >> (i * bytesPerChunk)) & msk).toString());
+      res.push(((bigintNum >> BigInt(i * bytesPerChunk)) & msk).toString());
     }
     return res;
   }

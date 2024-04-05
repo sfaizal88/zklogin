@@ -50,20 +50,19 @@ function LoginPage() {
         },
         onError: (error) => console.log('Login Failed:', error),
     });
+
     const getJWT = async  (accessToken) => {
-        // Send a request to Google's token endpoint to exchange the access token for a JWT
-        const response = await fetch('https://zklogin-api.vercel.app/exchange-token', {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: {
-                accessToken: accessToken
-            },
-        });
-        console.log(response);
-        const tokenData = await response.json();
-        const { id_token } = tokenData;
+        try {
+            const res = await axios.post(`http://localhost:3000/exchange-token`, { accessToken: accessToken }, {
+                
+              headers: {
+                Accept: 'application/json'
+              }
+            });
+            console.log(res.data);
+          } catch (err) {
+            console.error(err);
+          }
     }
     
     useEffect(
